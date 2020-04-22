@@ -4,12 +4,16 @@ from gameobjects.button import *
 from gameobjects.razas import *
 from gameobjects.battle import *
 from gameobjects.actions import *
+from gameobjects.GUI import GUI
 
 class Game:
     def __init__(self):
 
         #Creamos los botones
         self.buttons = [Button(690, 590, 100, 40, 'Atacar', self.makeTurn)]
+        #self.menu = Menu()
+        self.gui = GUI()
+        self.bg = None
 
         #Inicializamos la libreria pygame
         pygame.init()
@@ -23,11 +27,11 @@ class Game:
         clock.tick(60)
 
         #Creamos los personajes que van a jugar
-        self.player = Player("cuetin")
-        self.enemy = Goblin("verdini")
+        self.player = Player("Cuetin")
+        self.enemy = Goblin("Verdini")
 
         #Cargamos todos los recursos
-        self.loadResourses()
+        self.loadResources()
 
         #Comienza la batalla
         self.battle = Battle(self.player, self.enemy)
@@ -44,13 +48,16 @@ class Game:
                 button.handle_event(event, self)
 
 
-    def loadResourses(self):
+    def loadResources(self):
         self.loadPlayerImage(self.player)
         self.loadEnemyImage(self.enemy)
+        self.gui.loadResources()
 
 
     def render(self):
         self.screen.fill((255, 255, 255))
+        if (self.bg):
+            self.screen.blit(self.bg, (0, 0))
         self.renderPersonajes()
         self.renderButtons()
         pygame.display.update()
@@ -60,6 +67,8 @@ class Game:
         player_image = pygame.image.load('Imagenes/player.png')
         player_image = pygame.transform.scale(player_image, (300, 310))
         player.renderer = player_image
+        self.bg = pygame.image.load('Imagenes/back_ground.png')
+        self.bg = pygame.transform.scale(self.bg, (800, 490))
 
 
     def loadEnemyImage(self, enemy):
@@ -77,6 +86,16 @@ class Game:
     def renderButtons(self):
         for button in self.buttons:
             button.render(self)
+
+        self.gui.render(self)
+        if self.player.ps > 0 and self.enemy.ps == 0:
+            self.gui.renderMessage(self, self.player.name+" ha ganado!")
+        elif self.enemy.ps > 0 and self.player.ps == 0:
+            self.gui.renderMessage(self, self.enemy.name+" ha ganado!")
+        elif self.player.ps == 0 and self.enemy.ps == 0:
+            self.gui.renderMessage(self, "DOUBLE KO!!!")
+        else:
+            self.gui.renderMessage(self, "Que quieres hacer "+self.player.name+"?")
 
 
     def makeTurn(self):
