@@ -30,14 +30,14 @@ class Battle:
         attack2 = None
         #Comprobamos si quieren atacar
         if 'atacar' in command1.action.keys():
-            attack1 = 2
+            attack1 = self.player.attacks[command1.action['atacar']]
         if 'atacar' in command2.action.keys():
-            attack2 = 2
+            attack2 = self.enemy.attacks[command2.action['atacar']]
 
         #Se producen los ataques
-        self.enemy.ps -= attack1
+        self.enemy.ps -= attack1.dmg
         if self.enemy.ps > 0:
-            self.player.ps -= attack2
+            self.player.ps -= attack2.dmg
         
         #En caso de que la vida sea negativa la dejamos a cero
         self.enemy.ps = max(0, self.enemy.ps)

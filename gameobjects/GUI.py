@@ -1,10 +1,11 @@
 import pygame
 from pygame.locals import *
+import os
 
 class GUI:
     def __init__(self):
         pygame.font.init()
-        self.font = pygame.font.SysFont('Comic Sans MC', 50)
+        self.font = pygame.font.Font(os.path.join("font", "Cup and Talon.ttf"), 45)
         self.rect = pygame.Rect(0, 400, 160*4, 144*4)
         self.rendererPlayer = None
         self.rendererEnemy = None
@@ -44,12 +45,12 @@ class GUI:
 
         if self.rendererEnemy:
             text_surface = self.font.render(game.enemy.name, False, (255, 0, 0))
-            game.screen.blit(text_surface, (60, 15))
+            game.screen.blit(text_surface, (60, 10))
 
             #text_surface = self.font.render("Lv: "+str(game.enemy.level), False, (0, 0, 0))
             #game.screen.blit(text_surface, (250, 30))
 
-            text_surface = self.font.render(str(int(game.enemy.ps))+"/"+str(int(game.enemy.total_ps)), False, (0, 0, 0))
+            text_surface = self.font.render(str(int(game.enemy.ps))+"/"+str(int(game.enemy.total_ps)), False, (255, 0, 0))
             game.screen.blit(text_surface, (200, 90))
 
             game.screen.blit(self.rendererEnemy, (20, -120))

@@ -5,6 +5,7 @@ class GameObject:
     state = ""
     objects = {}
     renderer = None
+    attacks = []
 
     def __init__(self, name):
         self.name = name
@@ -17,5 +18,10 @@ class GameObject:
     def render(self, screen, position):
         if self.renderer:
             screen.blit(self.renderer, position)
+
+class Attack:
+    def __init__(self, name, dmg):
+        self.name = name
+        self.dmg = dmg
 
 

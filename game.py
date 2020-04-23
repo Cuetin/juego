@@ -3,15 +3,15 @@ from pygame.locals import *
 from gameobjects.button import *
 from gameobjects.razas import *
 from gameobjects.battle import *
-from gameobjects.actions import *
+from gameobjects.menu import *
 from gameobjects.GUI import GUI
 
 class Game:
     def __init__(self):
 
-        #Creamos los botones
-        self.buttons = [Button(690, 590, 100, 40, 'Atacar', self.makeTurn)]
-        #self.menu = Menu()
+        #self.buttons = [Button(690, 590, 100, 40, "Atacar", self.makeTurn)]
+        self.buttons = []
+        self.menu = Menu()
         self.gui = GUI()
         self.bg = None
 
@@ -46,6 +46,11 @@ class Game:
                 game.stopped = True
             for button in self.buttons:
                 button.handle_event(event, self)
+            self.menu.handle_event(event, self)
+
+            if event.type == pygame.MOUSEBUTTONUP:
+                if event.button == 1:
+                    print(event.pos)
 
 
     def loadResources(self):
@@ -84,10 +89,12 @@ class Game:
 
 
     def renderButtons(self):
-        for button in self.buttons:
-            button.render(self)
-
+        self.menu.render(self)
         self.gui.render(self)
+        if self.player.ps > 0 and self.enemy.ps > 0:
+            for button in self.buttons:
+                button.render(self)
+
         if self.player.ps > 0 and self.enemy.ps == 0:
             self.gui.renderMessage(self, self.player.name+" ha ganado!")
         elif self.enemy.ps > 0 and self.player.ps == 0:
@@ -98,16 +105,15 @@ class Game:
             self.gui.renderMessage(self, "Que quieres hacer "+self.player.name+"?")
 
 
-    def makeTurn(self):
+    def makeTurn(self, index):
         print('atacando')
         turn = Turn()
-        turn.command1 = Command({'atacar':1})
-        turn.command2 = Command({'atacar':1})
+        turn.command1 = Command({'atacar':index})
+        turn.command2 = Command({'atacar':0})
 
         if turn.can_start():
             self.battle.execute_turn(turn)
             self.battle.print_current_status()
-            self.battle.is_finished()
 
 
 

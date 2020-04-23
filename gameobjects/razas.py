@@ -1,4 +1,4 @@
-from .gameobject import GameObject
+from .gameobject import GameObject, Attack
 
 class Player(GameObject):
     def __init__(self, name):
@@ -7,6 +7,10 @@ class Player(GameObject):
         self.total_ps = 30
         self.ps = 30
         self._state = "Como un roble"
+        self.attacks = [
+            Attack("Estocada", 1),
+            Attack("Tajo", 2)
+        ]
         super().__init__(name)
 
     @property
@@ -32,6 +36,9 @@ class Goblin(GameObject):
         self.total_ps = 5
         self.ps = 5
         self._state = "Como un roble"
+        self.attacks = [
+            Attack("Estocada", 2)
+        ]
         super().__init__(name)
 
     @property
@@ -57,6 +64,7 @@ class Elf(GameObject):
         self.ps = 20
         self.total_ps = 20
         self._state = "Como un roble"
+        self.attacks = []
         super().__init__(name)
 
     @property
