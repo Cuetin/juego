@@ -24,4 +24,8 @@ class Attack:
         self.name = name
         self.dmg = dmg
 
+class Objeto:
+    def __init__(self, name):
+        self.name = name
+
 

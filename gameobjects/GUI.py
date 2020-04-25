@@ -33,9 +33,9 @@ class GUI:
         bar = pygame.Rect(position, (bar_size*percentage, 30))
         game.screen.fill(Color(color), bar)
 
-    def renderMessage(self, game, text):
+    def renderMessage(self, game, text, mul):
         text_surface = self.font.render(text, False, (0, 0, 0))
-        game.screen.blit(text_surface, (50, 500))
+        game.screen.blit(text_surface, (50, (45*mul)+500))
 
     def render(self, game):
         total_player_ps = game.player.total_ps
@@ -67,4 +67,4 @@ class GUI:
 
             game.screen.blit(self.rendererPlayer, (400, 200))
 
-        self.renderMessage(game, "")
+        self.renderMessage(game, "", 0)

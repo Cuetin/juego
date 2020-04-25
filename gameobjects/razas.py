@@ -1,4 +1,4 @@
-from .gameobject import GameObject, Attack
+from .gameobject import GameObject, Attack, Objeto
 
 class Player(GameObject):
     def __init__(self, name):
@@ -9,7 +9,15 @@ class Player(GameObject):
         self._state = "Como un roble"
         self.attacks = [
             Attack("Estocada", 1),
-            Attack("Tajo", 2)
+            Attack("Tajo", 2),
+            Attack("Golpe Remolino", 3),
+            Attack("Estocada divina", 4)
+        ]
+        self.objetos = [
+            Objeto("Baya picuda"),
+            Objeto("Potente afrodisiaco"),
+            Objeto("Mascarilla"),
+            Objeto("Gas lacrimogeno")
         ]
         super().__init__(name)
 
@@ -31,7 +39,6 @@ class Player(GameObject):
 
 class Goblin(GameObject):
     def __init__(self, name):
-        self.class_name = "Duende"
         self.description = "Los duendes son criaturas mitológicas fantásticas de forma humanoide pero del tamaño de un niño pequeño.\nSuelen ir equipados con armas robadas como espadas y escudos de madera."
         self.total_ps = 5
         self.ps = 5
@@ -57,6 +64,24 @@ class Goblin(GameObject):
     def state(self, val):
         self._state = val
 
+class ArchGoblin(Goblin):
+    def __init__(self, name):
+        self.class_name = "Arquero duende"
+        self.attacks = [
+            Attack("Flechazo", 1),
+            Attack("Flechazo fuego", 2)
+        ]
+        super().__init__(name)
+
+class WarriorGoblin(Goblin):
+    def __init__(self, name):
+        self.class_name = "Guerrero duende"
+        self.attacks = [
+            Attack("Estocada", 1),
+            Attack("Tajo", 2)
+        ]
+        super().__init__(name)
+
 class Elf(GameObject):
     def __init__(self, name):
         self.class_name = "Elfo"
@@ -64,7 +89,9 @@ class Elf(GameObject):
         self.ps = 20
         self.total_ps = 20
         self._state = "Como un roble"
-        self.attacks = []
+        self.attacks = [
+            Attack("Orejazo picudo", 2)
+        ]
         super().__init__(name)
 
     @property

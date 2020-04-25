@@ -20,15 +20,15 @@ class Game:
 
         #Creamos la ventana y le ponemos un titulo
         self.screen = pygame.display.set_mode((800, 640))
-        pygame.display.set_caption("Follate esos duendes!!!!")
+        pygame.display.set_caption("Goblin Slayer by Cuetin")
 
         #Creamos un reloj para controlar los frames y los tiempos
         clock = pygame.time.Clock()
         clock.tick(60)
 
         #Creamos los personajes que van a jugar
-        self.player = Player("Cuetin")
-        self.enemy = Goblin("Verdini")
+        self.player = Player("Marina")
+        self.enemy = Elf("Legolas")
 
         #Cargamos todos los recursos
         self.loadResources()
@@ -65,6 +65,7 @@ class Game:
             self.screen.blit(self.bg, (0, 0))
         self.renderPersonajes()
         self.renderButtons()
+        self.renderTextMessage()
         pygame.display.update()
 
 
@@ -95,14 +96,34 @@ class Game:
             for button in self.buttons:
                 button.render(self)
 
-        if self.player.ps > 0 and self.enemy.ps == 0:
-            self.gui.renderMessage(self, self.player.name+" ha ganado!")
-        elif self.enemy.ps > 0 and self.player.ps == 0:
-            self.gui.renderMessage(self, self.enemy.name+" ha ganado!")
-        elif self.player.ps == 0 and self.enemy.ps == 0:
-            self.gui.renderMessage(self, "DOUBLE KO!!!")
-        else:
-            self.gui.renderMessage(self, "Que quieres hacer "+self.player.name+"?")
+    def renderTextMessage(self):
+        if self.menu.state == 0:
+            if self.player.ps > 0 and self.enemy.ps == 0:
+                self.gui.renderMessage(self, self.player.name+" ha ganado!", 0)
+            elif self.enemy.ps > 0 and self.player.ps == 0:
+                self.gui.renderMessage(self, self.enemy.name+" ha ganado!", 0)
+            elif self.player.ps == 0 and self.enemy.ps == 0:
+                self.gui.renderMessage(self, "DOUBLE KO!!!", 0)
+            else:
+                self.gui.renderMessage(self, "Que quieres hacer "+self.player.name+"?", 0)
+        elif self.menu.state == 1:
+            if self.player.ps > 0 and self.enemy.ps == 0:
+                self.gui.renderMessage(self, self.player.name+" ha ganado!", 0)
+            elif self.enemy.ps > 0 and self.player.ps == 0:
+                self.gui.renderMessage(self, self.enemy.name+" ha ganado!", 0)
+            elif self.player.ps == 0 and self.enemy.ps == 0:
+                self.gui.renderMessage(self, "DOUBLE KO!!!", 0)
+            else:
+                self.gui.renderMessage(self, "Que quieres hacer "+self.player.name+"?", 0)
+        elif self.menu.state == 2:
+            self.gui.renderMessage(self, "Raza: "+self.enemy.class_name, 0)
+            self.gui.renderMessage(self, "HP: "+str(self.enemy.ps), 1)
+            self.gui.renderMessage(self, "Estado: "+self.enemy.state, 2)
+        elif self.menu.state == 3:
+            self.gui.renderMessage(self, '"Intenta vencerme debilucho"', 0)
+            self.gui.renderMessage(self, self.player.name+' le saca la lengua', 1)
+        elif self.menu.state == 4:
+            self.gui.renderMessage(self, 'Que objeto quieres usar?', 0)
 
 
     def makeTurn(self, index):
@@ -114,6 +135,11 @@ class Game:
         if turn.can_start():
             self.battle.execute_turn(turn)
             self.battle.print_current_status()
+
+    def useObjeto(self, index):
+        item = self.player.objetos[index].name
+        print(item)
+        self.gui.renderMessage(self, "Has usado "+item, 1)
 
 
 
